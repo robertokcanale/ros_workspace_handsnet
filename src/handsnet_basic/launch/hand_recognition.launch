@@ -1,0 +1,9 @@
+<launch>
+
+    <node pkg="handsnet" name="hand_recognition" type="hand_recognition_wip.py"/>
+
+  
+    <node pkg="handsnet" name="contact" type="tactile_image_publisher.py"/>
+
+  
+  </launch>

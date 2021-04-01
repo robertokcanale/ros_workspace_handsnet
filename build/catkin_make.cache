@@ -1,0 +1,2 @@
+handsnet_basic:handsnet_time
+-DCATKIN_DEVEL_PREFIX=/home/maclab/Documents/RCanale/ros_workspace/devel -DCMAKE_INSTALL_PREFIX=/home/maclab/Documents/RCanale/ros_workspace/install -G Unix Makefiles

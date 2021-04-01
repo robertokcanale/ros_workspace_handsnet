@@ -1,0 +1,8 @@
+prefix=/home/maclab/Documents/RCanale/ros_workspace/install
+
+Name: handsnet
+Description: Description of handsnet
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
