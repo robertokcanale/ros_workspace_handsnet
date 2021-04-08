@@ -19,7 +19,7 @@ if __name__ == '__main__':
             #PIL image
             im = Image.open(im_name)
             im = im.convert('RGB')
-            im = im.resize((68,100), Image.ANTIALIAS) 
+            im = im.resize((68,100), Image.ANTIALIAS) #I have to write it like this so that when the message is sent i get 100,68,3
             #sensor_msgs.msg.Image
             tactile_image = TactileImage()
             tactile_image.header.stamp = rospy.Time.now()

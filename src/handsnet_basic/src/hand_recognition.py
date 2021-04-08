@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import rospy
+import os
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
@@ -11,7 +12,7 @@ tactile_image = tactile_image = np.zeros((1, 100, 68, 3))
 
 #IMPORTING THE MODEL
 def import_model():
-    model = tf.keras.models.load_model('src/handsnet/data/HandsNet_2_97.h5')
+    model = tf.keras.models.load_model('src/handsnet_basic/data/HandsNet_2_97.h5')
     model.trainable = False #Freezing the Model
     #model.summary()
     return model
@@ -19,9 +20,12 @@ def import_model():
 #CALLBACK IMAGE CONVERSION
 def callback(data):
     global tactile_image 
+    print(data.header.frame_id)
     cv_image= ros_numpy.numpify(data)
 
     input_arr= keras.preprocessing.image.img_to_array(cv_image) #Converts to numpy.ndarray
+    #input_arr = np.transpose(input_arr, (1, 0, 2)) #transposing the image for processing
+    print(input_arr.shape)
     tactile_image= np.array([input_arr])  #Adds the first dimension
 
 #RECOGNIZE HAND OR NON_HAND
@@ -52,6 +56,8 @@ if __name__ == '__main__':
         except RuntimeError as e:
         # Virtual devices must be set before GPUs have been initialized
             print(e)
+    
+
 
     #NODE INITIALIZATION
     rospy.init_node('hand_recognition', anonymous=True)

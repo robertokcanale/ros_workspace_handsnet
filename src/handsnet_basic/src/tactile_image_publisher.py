@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from tensorflow.core.protobuf.trackable_object_graph_pb2 import _TRACKABLEOBJECTGRAPH_TRACKABLEOBJECT_SLOTVARIABLEREFERENCE
 import rospy
 #import tensorflow as tf
 from PIL import Image
@@ -10,25 +11,27 @@ if __name__ == '__main__':
 
     pub = rospy.Publisher('tactile_image', TactileImage, queue_size=10)
     rospy.init_node('tactile_image_publisher')
-    rate = rospy.Rate(10) # 1hz
+    rate = rospy.Rate(1) # 1hz
 
     #publishing_my_image, in this case a loop of images
     while not rospy.is_shutdown():
         for i in range(1, 25):
-            im_name='src/handsnet/data/'+str(i)+'.png'
+            im_name='src/handsnet_basic/data/'+str(i)+'.png'
             #PIL image
             im = Image.open(im_name)
             im = im.convert('RGB')
-            im = im.resize((68,100), Image.ANTIALIAS) 
+            im = im.resize((68,100), Image.ANTIALIAS) #I have to write it like this so that when the message is sent i get 100,68,3
             #sensor_msgs.msg.Image
             tactile_image = TactileImage()
             tactile_image.header.stamp = rospy.Time.now()
+            tactile_image.header.frame_id = str(i)
             tactile_image.height = im.height
             tactile_image.width = im.width
             tactile_image.encoding = "rgb8"
             tactile_image.is_bigendian = False
             tactile_image.step = 3 * im.width # Full row length in bytes
             tactile_image.data = np.array(im).tobytes()
+            print(np.array(im).shape)
             pub.publish(tactile_image)
             rate.sleep()
     #also, I need something of the kind    PIL.Image.Image
